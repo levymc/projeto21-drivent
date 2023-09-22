@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  email      String      @unique @db.VarChar(255)
+  password   String      @db.VarChar(255)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  Enrollment Enrollment?
+  Session    Session[]
+
+  @@map("user")
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@map("session")
+}
+
+model Event {
+  id                 Int      @id @default(autoincrement())
+  title              String   @db.VarChar(255)
+  backgroundImageUrl String   @db.VarChar(255)
+  logoImageUrl       String   @db.VarChar(255)
+  startsAt           DateTime
+  endsAt             DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("event")
+}
+
+model Enrollment {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  cpf       String    @db.VarChar(255)
+  birthday  DateTime
+  phone     String    @db.VarChar(255)
+  userId    Int       @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User      @relation(fields: [userId], references: [id])
+  Address   Address[]
+  Ticket    Ticket?
+
+  @@map("enrollment")
+}
+
+model Address {
+  id            Int        @id @default(autoincrement())
+  cep           String     @db.VarChar(255)
+  street        String     @db.VarChar(255)
+  city          String     @db.VarChar(255)
+  state         String     @db.VarChar(255)
+  number        String     @db.VarChar(255)
+  neighborhood  String     @db.VarChar(255)
+  addressDetail String?    @db.VarChar(255)
+  enrollmentId  Int        @unique
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+
+  @@map("address")
+}
+
+model Ticket {
+  id           Int        @id @default(autoincrement())
+  ticketTypeId Int        @unique
+  status       String
+  enrollmentId Int        @unique
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  Enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  TicketType   TicketType @relation(fields: [ticketTypeId], references: [id])
+  Payment      Payment[]
+  
+  @@map("ticket")
+}
+
+
+model TicketType {
+  id            Int      @id @default(autoincrement())
+  name          String
+  price         Int
+  isRemote      Boolean
+  includesHotel Boolean
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  Ticket        Ticket[]
+
+  @@map("ticketType")
+}
+
+model Payment {
+  id             Int      @id @default(autoincrement())
+  ticketId       Int      @unique
+  value          Int
+  cardIssuer     String
+  cardLastDigits String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  Ticket         Ticket   @relation(fields: [ticketId], references: [id])
+
+  @@map("payment")
+}
