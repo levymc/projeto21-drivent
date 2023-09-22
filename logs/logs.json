@@ -4,9 +4,9 @@
 [33m[nodemon] watching extensions: ts[39m
 [32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
 Server is listening on port 4000.
-{"level":"INFO","time":1695417380107,"msg":"getTicketsType START"}
-{"level":"INFO","time":1695417380108,"msg":"ticketsService.returnTicketsTypes START"}
-{"level":"TRACE","time":1695417380108,"msg":"ticketsRepository.findTicketsTypes START"}
-{"level":"TRACE","time":1695417380312,"msg":"ticketsRepository.findTicketsTypes START","retorno":[]}
-{"level":"INFO","time":1695417380314,"msg":"ticketsService.returnTicketsTypes END"}
-{"level":"INFO","time":1695417380314,"msg":"getTicketsType END"}
+{"level":"INFO","time":1695418243568,"msg":"getTicketsType START"}
+{"level":"INFO","time":1695418243570,"msg":"ticketsService.returnTicketsTypes START"}
+{"level":"TRACE","time":1695418243570,"msg":"ticketsRepository.findTicketsTypes START"}
+{"level":"TRACE","time":1695418243683,"msg":"ticketsRepository.findTicketsTypes START","retorno":[{"id":1,"name":"VIP","price":55,"isRemote":false,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.152Z","updatedAt":"2023-09-22T21:29:46.153Z"},{"id":2,"name":"Family","price":80,"isRemote":false,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.161Z","updatedAt":"2023-09-22T21:29:46.162Z"},{"id":3,"name":"Premium","price":149,"isRemote":true,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.167Z","updatedAt":"2023-09-22T21:29:46.167Z"},{"id":4,"name":"Family","price":86,"isRemote":false,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.173Z","updatedAt":"2023-09-22T21:29:46.173Z"},{"id":5,"name":"Student","price":173,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.179Z","updatedAt":"2023-09-22T21:29:46.180Z"},{"id":6,"name":"Standard","price":139,"isRemote":true,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.185Z","updatedAt":"2023-09-22T21:29:46.186Z"},{"id":7,"name":"Student","price":95,"isRemote":true,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.192Z","updatedAt":"2023-09-22T21:29:46.192Z"},{"id":8,"name":"Standard","price":198,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.198Z","updatedAt":"2023-09-22T21:29:46.199Z"},{"id":9,"name":"Family","price":71,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.204Z","updatedAt":"2023-09-22T21:29:46.205Z"},{"id":10,"name":"Premium","price":90,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.210Z","updatedAt":"2023-09-22T21:29:46.210Z"}]}
+{"level":"INFO","time":1695418243685,"msg":"ticketsService.returnTicketsTypes END"}
+{"level":"INFO","time":1695418243685,"msg":"getTicketsType END"}
