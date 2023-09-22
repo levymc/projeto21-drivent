@@ -1,11 +1,9 @@
 import { Router } from 'express';
-
-import { createUserSchema } from '@/schemas';
 import { validateBody } from '@/middlewares';
-import { usersPost } from '@/controllers';
+import { getTicketsType } from '@/controllers';
 
 const ticketsRouter = Router();
 
-ticketsRouter.get('/tickets/types', usersPost);
+ticketsRouter.get('/', getTicketsType);
 
 export { ticketsRouter };

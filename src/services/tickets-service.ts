@@ -1,6 +1,13 @@
+import logger from '@/config/logger';
 import { ticketsRepository } from '@/repositories/tickets-repository';
 
-export async function signIn() {
-  const tickets = await ticketsRepository.findTicketsType();
-  return tickets;
+async function returnTicketsTypes() {
+  logger.info('ticketsService.returnTicketsTypes START');
+  const ticketsTypes = await ticketsRepository.findTicketsTypes();
+  logger.info('ticketsService.returnTicketsTypes END');
+  return ticketsTypes;
 }
+
+export const ticketsService = {
+  returnTicketsTypes,
+};
