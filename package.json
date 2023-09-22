@@ -22,8 +22,12 @@
     "dev:migration:run": "npm run dev:load-envs prisma migrate deploy",
     "dev:migration:generate": "npm run dev:load-envs prisma migrate dev",
     "dev:seed": "npm run dev:load-envs prisma db seed",
+<<<<<<< HEAD
     "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "devLog": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts > logs/logs.json"
+=======
+    "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts"
+>>>>>>> driven4
   },
   "keywords": [
     "driven.t",
@@ -76,8 +80,11 @@
     "@brazilian-utils/brazilian-utils": "^1.0.0-rc.12",
     "@prisma/client": "^3.14.0",
     "@types/axios": "^0.14.0",
+<<<<<<< HEAD
     "@types/faker": "^6.6.9",
     "@types/pino": "^7.0.5",
+=======
+>>>>>>> driven4
     "axios": "^1.1.3",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -86,6 +93,7 @@
     "dotenv-expand": "^8.0.3",
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
+<<<<<<< HEAD
     "faker": "^6.6.6",
     "http-status": "^1.5.2",
     "joi": "^17.6.0",
@@ -94,3 +102,11 @@
     "reflect-metadata": "^0.1.13"
   }
 }
+=======
+    "http-status": "^1.5.2",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "reflect-metadata": "^0.1.13"
+  }
+}
+>>>>>>> driven4

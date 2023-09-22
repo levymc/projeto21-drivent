@@ -1,33 +1,11 @@
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { Response } from 'express';
-import { ticketsServices } from '@/services/tickets-service';
-import { AuthenticatedRequest } from '@/middlewares';
-import { createTicket } from '@/protocols';
-import { invalidDataError } from '@/errors';
+import { userService } from '@/services';
 
-async function getTypes(req: AuthenticatedRequest, res: Response) {
-  const result = await ticketsServices.getTypes();
-  res.status(httpStatus.OK).send(result);
+export async function getTickets(req: Request, res: Response) {
+  const { email, password } = req.body;
+
+  const tickets = await userService.createUser({ email, password });
+
+  return res.json(tickets);
 }
-
-async function getTicket(req: AuthenticatedRequest, res: Response) {
-  const result = await ticketsServices.getTicket(req.userId);
-
-  res.status(httpStatus.OK).send(result);
-}
-
-async function createTicket(req: AuthenticatedRequest, res: Response) {
-  const { ticketTypeId } = req.body as createTicket;
-
-  if (!ticketTypeId) throw invalidDataError('ticketType error - invalid data request');
-
-  const result = await ticketsServices.createTicket(req.userId, ticketTypeId);
-
-  res.status(httpStatus.CREATED).send(result);
-}
-
-export const ticketsControllers = {
-  getTypes,
-  getTicket,
-  createTicket,
-};
