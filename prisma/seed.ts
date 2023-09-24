@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
-import { faker } from '@faker-js/faker'
+import faker from "faker";
 const prisma = new PrismaClient();
 
-async function main() {
+async function createEvent() {
   let event = await prisma.event.findFirst();
   if (!event) {
     event = await prisma.event.create({
@@ -16,17 +16,56 @@ async function main() {
       },
     });
   }
+}
 
-  console.log({ event });
+async function createUsers() {
+  const numUsers = 10;
 
-  const numInserts = 10; 
+  for (let i = 0; i < numUsers; i++) {
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+
+    await prisma.user.create({
+      data: {
+        email,
+        password,
+      },
+    });
+  }
+}
+
+async function createEnrollments() {
+  const numEnrollments = 10;
+
+  for (let i = 0; i < numEnrollments; i++) {
+    const name = faker.name.findName();
+    const cpf = faker.random.number({ min: 10000000000, max: 99999999999 }).toString();
+    const birthday = faker.date.past();
+    const phone = faker.phone.phoneNumber();
+    const userId = faker.random.number({ min: 1, max: 100 });
+
+    await prisma.enrollment.create({
+      data: {
+        name,
+        cpf,
+        birthday,
+        phone,
+        userId,
+      },
+    });
+  }
+}
+
+async function createTicketTypes() {
+  const numTicketTypes = 5;
+
   const ticketTypes = ["Standard", "VIP", "Premium", "Student", "Family"];
 
-  for (let i = 0; i < numInserts; i++) {
-    const name = faker.helpers.arrayElement(ticketTypes);
-    const price = faker.datatype.number({ min: 50, max: 200 });
-    const isRemote = faker.datatype.boolean();
-    const includesHotel = faker.datatype.boolean();
+  for (let i = 0; i < numTicketTypes; i++) {
+    const name = ticketTypes[i];
+    const price = faker.random.number({ min: 50, max: 200 });
+    const isRemote = faker.random.boolean();
+    const includesHotel = faker.random.boolean();
 
     await prisma.ticketType.create({
       data: {
@@ -37,6 +76,13 @@ async function main() {
       },
     });
   }
+}
+
+async function main() {
+  await createEvent();
+  await createUsers();
+  await createEnrollments();
+  await createTicketTypes();
 }
 
 main()

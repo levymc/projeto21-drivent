@@ -4,9 +4,10 @@ import { ticketsService } from '@/services';
 import logger from '@/config/logger';
 
 export async function getTickets(req: Request, res: Response) {
-  const { email, password } = req.body;
-
-  return res.json("'tickets'");
+  logger.info('getTickets START');
+  const tickets = await ticketsService.returnTickets();
+  logger.info('getTickets END');
+  return res.json(tickets);
 }
 
 export async function getTicketsType(req: Request, res: Response) {

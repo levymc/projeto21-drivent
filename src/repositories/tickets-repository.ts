@@ -6,9 +6,18 @@ async function findTicketsTypes() {
   const retorno = await prisma.ticketType.findMany({});
   logger.trace({ msg: 'ticketsRepository.findTicketsTypes START', retorno });
 
-  return prisma.ticketType.findMany();
+  return retorno;
+}
+
+async function findTickets() {
+  logger.trace('ticketsRepository.findTickets START');
+  const retorno = await prisma.ticket.findMany({});
+  logger.trace({ msg: 'ticketsRepository.findTickets START', retorno });
+
+  return retorno;
 }
 
 export const ticketsRepository = {
   findTicketsTypes,
+  findTickets,
 };

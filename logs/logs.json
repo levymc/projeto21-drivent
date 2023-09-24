@@ -4,9 +4,56 @@
 [33m[nodemon] watching extensions: ts[39m
 [32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
 Server is listening on port 4000.
-{"level":"INFO","time":1695418243568,"msg":"getTicketsType START"}
-{"level":"INFO","time":1695418243570,"msg":"ticketsService.returnTicketsTypes START"}
-{"level":"TRACE","time":1695418243570,"msg":"ticketsRepository.findTicketsTypes START"}
-{"level":"TRACE","time":1695418243683,"msg":"ticketsRepository.findTicketsTypes START","retorno":[{"id":1,"name":"VIP","price":55,"isRemote":false,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.152Z","updatedAt":"2023-09-22T21:29:46.153Z"},{"id":2,"name":"Family","price":80,"isRemote":false,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.161Z","updatedAt":"2023-09-22T21:29:46.162Z"},{"id":3,"name":"Premium","price":149,"isRemote":true,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.167Z","updatedAt":"2023-09-22T21:29:46.167Z"},{"id":4,"name":"Family","price":86,"isRemote":false,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.173Z","updatedAt":"2023-09-22T21:29:46.173Z"},{"id":5,"name":"Student","price":173,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.179Z","updatedAt":"2023-09-22T21:29:46.180Z"},{"id":6,"name":"Standard","price":139,"isRemote":true,"includesHotel":true,"createdAt":"2023-09-22T21:29:46.185Z","updatedAt":"2023-09-22T21:29:46.186Z"},{"id":7,"name":"Student","price":95,"isRemote":true,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.192Z","updatedAt":"2023-09-22T21:29:46.192Z"},{"id":8,"name":"Standard","price":198,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.198Z","updatedAt":"2023-09-22T21:29:46.199Z"},{"id":9,"name":"Family","price":71,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.204Z","updatedAt":"2023-09-22T21:29:46.205Z"},{"id":10,"name":"Premium","price":90,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-22T21:29:46.210Z","updatedAt":"2023-09-22T21:29:46.210Z"}]}
-{"level":"INFO","time":1695418243685,"msg":"ticketsService.returnTicketsTypes END"}
-{"level":"INFO","time":1695418243685,"msg":"getTicketsType END"}
+{"level":"INFO","time":1695488166373,"msg":"getTicketsType START"}
+{"level":"INFO","time":1695488166374,"msg":"ticketsService.returnTicketsTypes START"}
+{"level":"TRACE","time":1695488166374,"msg":"ticketsRepository.findTicketsTypes START"}
+{"level":"TRACE","time":1695488166461,"msg":"ticketsRepository.findTicketsTypes START","retorno":[]}
+{"level":"INFO","time":1695488166464,"msg":"ticketsService.returnTicketsTypes END"}
+{"level":"INFO","time":1695488166464,"msg":"getTicketsType END"}
+{"level":"INFO","time":1695488193841,"msg":"getTicketsType START"}
+{"level":"INFO","time":1695488193841,"msg":"ticketsService.returnTicketsTypes START"}
+{"level":"TRACE","time":1695488193841,"msg":"ticketsRepository.findTicketsTypes START"}
+{"level":"TRACE","time":1695488193848,"msg":"ticketsRepository.findTicketsTypes START","retorno":[{"id":21,"name":"Student","price":69,"isRemote":true,"includesHotel":false,"createdAt":"2023-09-23T16:56:30.299Z","updatedAt":"2023-09-23T16:56:30.300Z"},{"id":22,"name":"Premium","price":189,"isRemote":true,"includesHotel":true,"createdAt":"2023-09-23T16:56:30.307Z","updatedAt":"2023-09-23T16:56:30.307Z"},{"id":23,"name":"Family","price":193,"isRemote":true,"includesHotel":true,"createdAt":"2023-09-23T16:56:30.312Z","updatedAt":"2023-09-23T16:56:30.313Z"},{"id":24,"name":"Standard","price":114,"isRemote":true,"includesHotel":true,"createdAt":"2023-09-23T16:56:30.318Z","updatedAt":"2023-09-23T16:56:30.319Z"},{"id":25,"name":"VIP","price":109,"isRemote":false,"includesHotel":true,"createdAt":"2023-09-23T16:56:30.324Z","updatedAt":"2023-09-23T16:56:30.324Z"},{"id":26,"name":"Premium","price":181,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-23T16:56:30.330Z","updatedAt":"2023-09-23T16:56:30.331Z"},{"id":27,"name":"VIP","price":77,"isRemote":true,"includesHotel":false,"createdAt":"2023-09-23T16:56:30.336Z","updatedAt":"2023-09-23T16:56:30.337Z"},{"id":28,"name":"Standard","price":82,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-23T16:56:30.342Z","updatedAt":"2023-09-23T16:56:30.343Z"},{"id":29,"name":"Standard","price":84,"isRemote":false,"includesHotel":false,"createdAt":"2023-09-23T16:56:30.348Z","updatedAt":"2023-09-23T16:56:30.349Z"},{"id":30,"name":"Family","price":64,"isRemote":true,"includesHotel":true,"createdAt":"2023-09-23T16:56:30.355Z","updatedAt":"2023-09-23T16:56:30.355Z"}]}
+{"level":"INFO","time":1695488193851,"msg":"ticketsService.returnTicketsTypes END"}
+{"level":"INFO","time":1695488193851,"msg":"getTicketsType END"}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node -r tsconfig-paths/register ./src/server.ts`[39m
+Server is listening on port 4000.
+{"level":"INFO","time":1695489042957,"msg":"getTickets START"}
+{"level":"INFO","time":1695489042957,"msg":"ticketsService.returnTickets START"}
+{"level":"TRACE","time":1695489042957,"msg":"ticketsRepository.findTickets START"}
+{"level":"TRACE","time":1695489043049,"msg":"ticketsRepository.findTickets START","retorno":[]}
+{"level":"INFO","time":1695489043050,"msg":"ticketsService.returnTickets END"}
+{"level":"INFO","time":1695489043050,"msg":"getTickets END"}

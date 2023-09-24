@@ -8,6 +8,14 @@ async function returnTicketsTypes() {
   return ticketsTypes;
 }
 
+async function returnTickets() {
+  logger.info('ticketsService.returnTickets START');
+  const tickets = await ticketsRepository.findTickets();
+  logger.info('ticketsService.returnTickets END');
+  return tickets;
+}
+
 export const ticketsService = {
   returnTicketsTypes,
+  returnTickets,
 };
