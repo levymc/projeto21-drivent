@@ -85,7 +85,7 @@ model Ticket {
   updatedAt    DateTime   @updatedAt
   Enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
   TicketType   TicketType @relation(fields: [ticketTypeId], references: [id])
-  Payment      Payment[]
+  Payment      Payment[]                
   
   @@map("ticket")
 }

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
-import faker from "faker";
+import { faker } from '@faker-js/faker';
 const prisma = new PrismaClient();
 
 async function createEvent() {

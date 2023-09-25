@@ -1,5 +1,6 @@
 import logger from '@/config/logger';
 import { ticketsRepository } from '@/repositories/tickets-repository';
+import { Ticket } from '@prisma/client';
 
 async function returnTicketsTypes() {
   logger.info('ticketsService.returnTicketsTypes START');
@@ -15,7 +16,15 @@ async function returnTickets() {
   return tickets;
 }
 
+async function createTicket(data: Ticket) {
+  logger.info('ticketsService.createTicket START');
+  const tickets = await ticketsRepository.create(data);
+  logger.info('ticketsService.createTicket END');
+  return tickets;
+}
+
 export const ticketsService = {
   returnTicketsTypes,
   returnTickets,
+  createTicket,
 };

@@ -16,3 +16,10 @@ export async function getTicketsType(req: Request, res: Response) {
   logger.info('getTicketsType END');
   return res.json(ticketsTypes);
 }
+
+export async function postTicket(req: Request, res: Response) {
+  logger.info('postTicket START');
+  const postedTicket = await ticketsService.createTicket(req.body);
+  logger.info('postTicket END');
+  return res.json(postedTicket);
+}
