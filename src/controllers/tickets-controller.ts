@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 import { Response } from 'express';
 import { ticketsServices } from '@/services/tickets-service';
 import { AuthenticatedRequest } from '@/middlewares';
-import { createTicket } from '@/repositories/tickets-repository';
+import { createTicket } from '@/protocols';
 import { invalidDataError } from '@/errors';
 
 async function getTypes(req: AuthenticatedRequest, res: Response) {

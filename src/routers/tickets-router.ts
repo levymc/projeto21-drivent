@@ -6,8 +6,8 @@ import { ticketSchema } from '@/schemas';
 const ticketsRouter = Router();
 
 ticketsRouter.all('/*', authenticateToken);
-ticketsRouter.get('/', ticketsControllers.getTicket);
 ticketsRouter.get('/types', ticketsControllers.getTypes);
+ticketsRouter.get('/', ticketsControllers.getTicket);
 ticketsRouter.post('/', validateBody(ticketSchema), ticketsControllers.createTicket);
 
 export { ticketsRouter };
