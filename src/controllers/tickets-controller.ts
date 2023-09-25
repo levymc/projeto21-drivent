@@ -1,25 +1,33 @@
-import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { ticketsService } from '@/services';
-import logger from '@/config/logger';
+import { Response } from 'express';
+import { ticketsServices } from '@/services/tickets-service';
+import { AuthenticatedRequest } from '@/middlewares';
+import { createTicket } from '@/repositories/tickets-repository';
+import { invalidDataError } from '@/errors';
 
-export async function getTickets(req: Request, res: Response) {
-  logger.info('getTickets START');
-  const tickets = await ticketsService.returnTickets();
-  logger.info('getTickets END');
-  return res.json(tickets);
+async function getTypes(req: AuthenticatedRequest, res: Response) {
+  const result = await ticketsServices.getTypes();
+  res.status(httpStatus.OK).send(result);
 }
 
-export async function getTicketsType(req: Request, res: Response) {
-  logger.info('getTicketsType START');
-  const ticketsTypes = await ticketsService.returnTicketsTypes();
-  logger.info('getTicketsType END');
-  return res.json(ticketsTypes);
+async function getTicket(req: AuthenticatedRequest, res: Response) {
+  const result = await ticketsServices.getTicket(req.userId);
+
+  res.status(httpStatus.OK).send(result);
 }
 
-export async function postTicket(req: Request, res: Response) {
-  logger.info('postTicket START');
-  const postedTicket = await ticketsService.createTicket(req.body);
-  logger.info('postTicket END');
-  return res.json(postedTicket);
+async function createTicket(req: AuthenticatedRequest, res: Response) {
+  const { ticketTypeId } = req.body as createTicket;
+
+  if (!ticketTypeId) throw invalidDataError('ticketType error - invalid data request');
+
+  const result = await ticketsServices.createTicket(req.userId, ticketTypeId);
+
+  res.status(httpStatus.CREATED).send(result);
 }
+
+export const ticketsControllers = {
+  getTypes,
+  getTicket,
+  createTicket,
+};

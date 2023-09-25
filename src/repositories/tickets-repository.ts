@@ -1,56 +1,49 @@
-import { prisma } from '@/config';
-import logger from '@/config/logger';
-import { Ticket } from '@prisma/client';
+import { TicketType, Ticket } from '@prisma/client';
+import { prisma } from '@/config/database';
 
-async function findTicketsTypes() {
-  logger.trace('ticketsRepository.findTicketsTypes START');
-  const retorno = await prisma.ticketType.findMany({});
-  logger.trace({ msg: 'ticketsRepository.findTicketsTypes START', retorno });
+type postTicket = Omit<Ticket, 'id' | 'createdAt' | 'updatedAt'>;
 
-  return retorno;
+async function getTypes(): Promise<TicketType[]> {
+  const result = await prisma.ticketType.findMany();
+  return result;
 }
 
-async function findTickets() {
-  logger.trace('ticketsRepository.findTickets START');
-  const tickets = await prisma.ticket.findMany({
+async function getTicket(enrollmentId: number) {
+  const ticket = await prisma.ticket.findUnique({
+    where: {
+      enrollmentId,
+    },
     include: {
       TicketType: true,
     },
   });
-  const formattedTickets = tickets.map((ticket) => ({
-    id: ticket.id,
-    status: ticket.status,
-    ticketTypeId: ticket.ticketTypeId,
-    enrollmentId: ticket.enrollmentId,
-    TicketType: {
-      id: ticket.TicketType.id,
-      name: ticket.TicketType.name,
-      price: ticket.TicketType.price,
-      isRemote: ticket.TicketType.isRemote,
-      includesHotel: ticket.TicketType.includesHotel,
-      createdAt: ticket.TicketType.createdAt,
-      updatedAt: ticket.TicketType.updatedAt,
-    },
-    createdAt: ticket.createdAt,
-    updatedAt: ticket.updatedAt,
-  }));
-  logger.trace({ msg: 'ticketsRepository.findTickets end', formattedTickets });
-  return formattedTickets;
+
+  return ticket;
 }
 
-async function create(data: Ticket) {
-  console.log(data);
-  logger.trace('ticketsRepository.create START');
-  const retorno = await prisma.ticket.create({
-    data,
+async function verifyEnrollment(userId: number) {
+  const enrollment = await prisma.enrollment.findUnique({
+    where: {
+      userId,
+    },
   });
-  logger.trace('ticketsRepository.create END');
 
-  return retorno;
+  return enrollment;
+}
+
+async function createTicket(ticket: postTicket) {
+  const result = await prisma.ticket.create({
+    data: {
+      ...ticket,
+    },
+  });
+
+  return result;
 }
 
 export const ticketsRepository = {
-  findTicketsTypes,
-  findTickets,
-  create,
+  getTypes,
+  getTicket,
+  verifyEnrollment,
+  createTicket,
 };
