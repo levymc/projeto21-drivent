@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,26 +11,23 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  email      String      @unique @db.VarChar(255)
-  password   String      @db.VarChar(255)
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  Enrollment Enrollment?
+  id         Int          @id @default(autoincrement())
+  email      String       @unique @db.VarChar(255)
+  password   String       @db.VarChar(255)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
   Session    Session[]
-
-  @@map("user")
+  Enrollment Enrollment[]
+  Booking    Booking[]
 }
 
 model Session {
   id        Int      @id @default(autoincrement())
   userId    Int
+  User      User     @relation(fields: [userId], references: [id])
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User     @relation(fields: [userId], references: [id])
-
-  @@map("session")
 }
 
 model Event {
@@ -39,8 +39,6 @@ model Event {
   endsAt             DateTime
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
-
-  @@map("event")
 }
 
 model Enrollment {
@@ -50,13 +48,11 @@ model Enrollment {
   birthday  DateTime
   phone     String    @db.VarChar(255)
   userId    Int       @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
   User      User      @relation(fields: [userId], references: [id])
   Address   Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   Ticket    Ticket?
-
-  @@map("enrollment")
 }
 
 model Address {
@@ -69,50 +65,76 @@ model Address {
   neighborhood  String     @db.VarChar(255)
   addressDetail String?    @db.VarChar(255)
   enrollmentId  Int        @unique
+  Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
-  Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
-
-  @@map("address")
 }
-
-model Ticket {
-  id           Int        @id @default(autoincrement())
-  ticketTypeId Int        @unique
-  status       String
-  enrollmentId Int        @unique
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  Enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
-  TicketType   TicketType @relation(fields: [ticketTypeId], references: [id])
-  Payment      Payment[]
-  
-  @@map("ticket")
-}
-
 
 model TicketType {
   id            Int      @id @default(autoincrement())
-  name          String
+  name          String   @db.VarChar(255)
   price         Int
   isRemote      Boolean
   includesHotel Boolean
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   Ticket        Ticket[]
+}
 
-  @@map("ticketType")
+model Ticket {
+  id           Int          @id @default(autoincrement())
+  ticketTypeId Int
+  TicketType   TicketType   @relation(fields: [ticketTypeId], references: [id])
+  enrollmentId Int          @unique
+  Enrollment   Enrollment   @relation(fields: [enrollmentId], references: [id])
+  status       TicketStatus
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  Payment      Payment?
+}
+
+enum TicketStatus {
+  RESERVED
+  PAID
 }
 
 model Payment {
   id             Int      @id @default(autoincrement())
   ticketId       Int      @unique
+  Ticket         Ticket   @relation(fields: [ticketId], references: [id])
   value          Int
   cardIssuer     String
   cardLastDigits String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  Ticket         Ticket   @relation(fields: [ticketId], references: [id])
+}
 
-  @@map("payment")
+model Hotel {
+  id        Int      @id @default(autoincrement())
+  name      String
+  image     String
+  Rooms     Room[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Room {
+  id        Int       @id @default(autoincrement())
+  name      String
+  capacity  Int
+  hotelId   Int
+  Hotel     Hotel     @relation(fields: [hotelId], references: [id])
+  Booking   Booking[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  Room      Room     @relation(fields: [roomId], references: [id])
+  roomId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
