@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
 import { ApplicationError, RequestError } from '@/protocols';
+import logger from '@/config/logger';
 
 export function handleApplicationErrors(
   err: RequestError | ApplicationError | Error,
@@ -65,7 +66,7 @@ export function handleApplicationErrors(
   }
 
   /* eslint-disable-next-line no-console */
-  console.error(err);
+  logger.error(err);
   res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
     error: 'InternalServerError',
     message: 'Internal Server Error',
