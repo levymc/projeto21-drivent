@@ -1,8 +1,9 @@
-import { ApplicationError } from '@/protocols';
+import { RequestError } from '@/protocols';
 
-export function PaymentError(name: string, message: string): ApplicationError {
+export function PaymentError(message: string, status: number): RequestError {
   return {
-    name,
+    name: 'PaymentError',
     message,
+    status,
   };
 }

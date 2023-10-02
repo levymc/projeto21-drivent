@@ -1,3 +1,4 @@
+import httpStatus from 'http-status';
 import { notFoundError } from '@/errors';
 import { PaymentError } from '@/errors/payment-error';
 import { enrollmentRepository, hotelsRepository, ticketsRepository } from '@/repositories';
@@ -29,10 +30,12 @@ async function checkConditions(userId: number) {
   if (!enrollment) throw notFoundError();
   const userTicket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
   if (!userTicket) throw notFoundError();
-  else if (userTicket.status != `PAID`) throw PaymentError('PaymentIsRequired', 'O status do ticket deve ser Pago');
+  else if (userTicket.status != `PAID`)
+    throw PaymentError('O status do ticket deve ser Pago', httpStatus.PAYMENT_REQUIRED);
   else if (userTicket.TicketType.isRemote)
-    throw PaymentError(`TicketType Remote`, 'The type of ticket must not be remote');
-  else if (!userTicket.TicketType.includesHotel) throw PaymentError('TicketHotels', 'TicketType must include hotels');
+    throw PaymentError('The type of ticket must not be remote', httpStatus.PAYMENT_REQUIRED);
+  else if (!userTicket.TicketType.includesHotel)
+    throw PaymentError('TicketType must include hotels', httpStatus.PAYMENT_REQUIRED);
 }
 
 export const hotelsService = {
