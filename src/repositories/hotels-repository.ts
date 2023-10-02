@@ -5,6 +5,18 @@ async function findHotels() {
   return hotels;
 }
 
+async function findHotelById(id: number) {
+  return prisma.hotel.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      Rooms: true,
+    },
+  });
+}
+
 export const hotelsRepository = {
   findHotels,
+  findHotelById,
 };

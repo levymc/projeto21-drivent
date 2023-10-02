@@ -9,6 +9,13 @@ export async function getHotels(req: AuthenticatedRequest, res: Response) {
   return res.status(httpStatus.OK).send(hotels);
 }
 
+export async function getHotelById(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+  const hotelId = Number(req.params.id);
+  const hotel = await hotelsService.receiveHotelById(userId, hotelId);
+  return res.status(httpStatus.OK).send(hotel);
+}
+
 // export async function paymentProcess(req: AuthenticatedRequest, res: Response) {
 //   const { userId } = req;
 //   const { ticketId, cardData } = req.body as InputPaymentBody;
