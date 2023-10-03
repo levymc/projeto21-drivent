@@ -1,14 +1,19 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
 import { AuthenticatedRequest } from '@/middlewares';
 import { BookingWithRoom } from '@/protocols';
 import { bookingService } from '@/services/booking-service';
 
-export async function getBooking(req: AuthenticatedRequest, res: Response) {
+export async function getBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   //cada usuario tem uma só reserva
-  const { userId } = req;
+  try {
+    const { userId } = req;
+    console.log('Controller');
+    const booking = await bookingService.getBooking(userId);
 
-  const booking: BookingWithRoom = await bookingService.getBooking(userId);
-
-  res.status(httpStatus.OK).json(booking);
+    res.status(httpStatus.OK).json(booking);
+  } catch (err) {
+    console.error(err);
+    res.json(err);
+  }
 }
