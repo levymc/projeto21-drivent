@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-named-as-default
 import pino, { Logger as PinoLogger } from 'pino';
 import dotenv from 'dotenv';
 
