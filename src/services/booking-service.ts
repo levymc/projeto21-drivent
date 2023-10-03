@@ -23,7 +23,10 @@ async function getBooking(userId: number) {
   console.log(booking);
   if (!booking) throw notFoundError();
 
-  return booking;
+  return {
+    id: booking.id,
+    Room: booking.Room,
+  };
 }
 
 export const bookingService = {
