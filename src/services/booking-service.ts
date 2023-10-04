@@ -1,24 +1,37 @@
-import { TicketStatus } from '@prisma/client';
-import { invalidDataError, notFoundError } from '@/errors';
+import { Ticket, TicketStatus, TicketType } from '@prisma/client';
+import { notFoundError } from '@/errors';
 import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
-import { bookingRepository, enrollmentRepository, hotelRepository, ticketsRepository } from '@/repositories';
+import { bookingRepository, enrollmentRepository, ticketsRepository } from '@/repositories';
+import { EnrollmentMockType } from '@/protocols';
 
-async function validateUserBooking(userId: number) {
+async function findEnrollmentByUserId(userId: number): Promise<EnrollmentMockType> {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!enrollment) throw notFoundError();
+  return enrollment;
+}
 
-  const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollment.id);
+async function findTicketByEnrollmentId(enrollmentId: number) {
+  const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollmentId);
   if (!ticket) throw notFoundError();
+  return ticket;
+}
 
+function isInvalidBooking(ticket: Ticket, type: TicketType): boolean {
+  return ticket.status === TicketStatus.RESERVED || type.isRemote || !type.includesHotel;
+}
+
+async function validateUserBooking(userId: number) {
+  const enrollment = await findEnrollmentByUserId(userId);
+  const ticket = await findTicketByEnrollmentId(enrollment.id);
   const type = ticket.TicketType;
 
-  if (ticket.status === TicketStatus.RESERVED || type.isRemote || !type.includesHotel) {
+  if (isInvalidBooking(ticket, type)) {
     throw cannotListHotelsError();
   }
 }
 
 async function getBooking(userId: number) {
-  // await validateUserBooking(userId);
+  await validateUserBooking(userId);
   const booking = await bookingRepository.findBooking(userId);
   console.log(booking);
   if (!booking) throw notFoundError();
@@ -31,4 +44,7 @@ async function getBooking(userId: number) {
 
 export const bookingService = {
   getBooking,
+  findEnrollmentByUserId,
+  findTicketByEnrollmentId,
+  isInvalidBooking,
 };

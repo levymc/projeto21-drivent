@@ -1,4 +1,4 @@
-import { Room, Payment, Ticket } from '@prisma/client';
+import { Room, Payment, Ticket, Address } from '@prisma/client';
 
 export type ApplicationError = {
   name: string;
@@ -55,4 +55,16 @@ type RoomRented = Omit<Room, 'id' | 'createdAt' | 'updatedAt'>;
 export type BookingWithRoom = {
   id: number;
   Room: RoomRented;
+};
+
+export type EnrollmentMockType = {
+  id: number;
+  name: string;
+  cpf: string;
+  birthday: Date;
+  phone: string;
+  userId: number;
+  Address: Address[];
+  createdAt: Date;
+  updatedAt: Date;
 };
