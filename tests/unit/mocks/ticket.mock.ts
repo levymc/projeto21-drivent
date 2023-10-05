@@ -1,4 +1,5 @@
 import { Ticket, TicketStatus, TicketType } from '@prisma/client';
+import { faker } from '@faker-js/faker';
 
 type TicketMockType = Ticket;
 type TicketTypeMockType = TicketType;
@@ -20,4 +21,27 @@ export const mockTicketType: TicketTypeMockType = {
   includesHotel: true,
   createdAt: new Date(),
   updatedAt: new Date(),
+};
+
+export const generateRandomTicket = (): TicketMockType => {
+  return {
+    id: faker.datatype.number(),
+    ticketTypeId: faker.datatype.number(),
+    enrollmentId: faker.datatype.number(),
+    status: faker.helpers.arrayElement(Object.values(TicketStatus)),
+    createdAt: faker.date.past(),
+    updatedAt: faker.date.recent(),
+  };
+};
+
+export const generateRandomTicketType = (): TicketTypeMockType => {
+  return {
+    id: faker.datatype.number(),
+    name: faker.name.findName(),
+    price: faker.datatype.number(),
+    isRemote: faker.datatype.boolean(),
+    includesHotel: faker.datatype.boolean(),
+    createdAt: faker.date.past(),
+    updatedAt: faker.date.recent(),
+  };
 };
