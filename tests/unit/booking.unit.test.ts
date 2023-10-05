@@ -124,7 +124,7 @@ describe('Unit Tests Service /booking', () => {
 
   it('getBooking should return notFoundError when booking is null', async () => {
     const mockBooking = generateBookingMock();
-    const mockRoom = generateRoomMock()
+    const mockRoom = generateRoomMock();
     const mockTicket = generateRandomTicket();
     const mockTicketType = generateRandomTicketType();
     mockTicketType.isRemote = false;
