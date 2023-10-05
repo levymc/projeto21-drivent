@@ -33,7 +33,6 @@ async function validateUserBooking(userId: number) {
 async function getBooking(userId: number) {
   await validateUserBooking(userId);
   const booking = await bookingRepository.findBooking(userId);
-  console.log(booking);
   if (!booking) throw notFoundError();
 
   return {
