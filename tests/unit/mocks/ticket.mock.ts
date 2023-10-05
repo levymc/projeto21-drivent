@@ -1,10 +1,9 @@
 import { Ticket, TicketStatus, TicketType } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 
-type TicketMockType = Ticket;
 type TicketTypeMockType = TicketType;
 
-export const mockTicket: TicketMockType = {
+export const mockTicket: Ticket = {
   id: 1,
   ticketTypeId: 2,
   enrollmentId: 3,
@@ -23,7 +22,7 @@ export const mockTicketType: TicketTypeMockType = {
   updatedAt: new Date(),
 };
 
-export const generateRandomTicket = (): TicketMockType => {
+export const generateRandomTicket = (): Ticket => {
   return {
     id: faker.datatype.number(),
     ticketTypeId: faker.datatype.number(),

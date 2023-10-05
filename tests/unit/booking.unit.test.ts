@@ -6,17 +6,30 @@ import { notFoundError } from '@/errors';
 import { enrollmentRepository, ticketsRepository } from '@/repositories';
 import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 describe('Unit Tests Service /booking', () => {
   it('findEnrollmentByUserId should return Enrollment', async () => {
-    const input = 456;
-    const mock = jest.spyOn(bookingService, 'findEnrollmentByUserId');
-    mock.mockImplementation((): any => {
+    jest.spyOn(enrollmentRepository, 'findWithAddressByUserId').mockImplementation((): any => {
       return mockEnrollment2;
     });
-    const enrollment = await bookingService.findEnrollmentByUserId(input);
-    expect(bookingService.findEnrollmentByUserId).toBeCalledTimes(1);
-    expect(bookingService.findEnrollmentByUserId).toHaveBeenCalledWith(input);
+
+    const enrollment = await bookingService.findEnrollmentByUserId(1);
     expect(enrollment).toEqual(mockEnrollment2);
+    expect(enrollment).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+        name: expect.any(String),
+        cpf: expect.any(String),
+        birthday: expect.any(Date),
+        phone: expect.any(String),
+        userId: expect.any(Number),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+      }),
+    );
   });
 
   it('findEnrollmentByUserId should throw notFoundError when user does not exist', async () => {
@@ -47,10 +60,37 @@ describe('Unit Tests Service /booking', () => {
     expect(() => bookingService.validateUserBooking(1)).toThrow('Cannot list hotels!');
   });
 
-  it('findTicketByEnrollmentId should return Ticket', async () => {
+  it('findTicketByEnrollmentId should return notFoundError when !ticket', async () => {
     jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValue(null);
 
     const ticket = bookingService.findTicketByEnrollmentId(1);
     expect(ticket).rejects.toEqual(notFoundError());
+  });
+
+  it('findTicketByEnrollmentId should return Ticket', async () => {
+    const mockTicket = generateRandomTicket();
+    const mockTicketType = generateRandomTicketType();
+    jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValue({
+      id: mockTicket.id,
+      ticketTypeId: mockTicketType.id,
+      enrollmentId: 1,
+      status: mockTicket.status,
+      createdAt: mockTicket.createdAt,
+      updatedAt: mockTicket.updatedAt,
+      TicketType: mockTicketType,
+    });
+
+    const ticket = bookingService.findTicketByEnrollmentId(1);
+    expect(ticket).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+        ticketTypeId: expect.any(Number),
+        enrollmentId: expect.any(Number),
+        status: expect.any(String),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+        TicketType: expect.any(Object),
+      }),
+    );
   });
 });
