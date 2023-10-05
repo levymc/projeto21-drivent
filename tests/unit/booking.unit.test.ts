@@ -3,7 +3,8 @@ import { mockEnrollment2 } from './mocks/enrollment.mock';
 import { generateRandomTicket, generateRandomTicketType, mockTicket, mockTicketType } from './mocks/ticket.mock';
 import { bookingService } from '@/services/booking-service';
 import { notFoundError } from '@/errors';
-import { enrollmentRepository } from '@/repositories';
+import { enrollmentRepository, ticketsRepository } from '@/repositories';
+import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 
 describe('Unit Tests Service /booking', () => {
   it('findEnrollmentByUserId should return Enrollment', async () => {
@@ -32,27 +33,24 @@ describe('Unit Tests Service /booking', () => {
     }
   });
 
-  it('isInvalidBooking should return false', async () => {
-    const mock = jest.spyOn(bookingService, 'isInvalidBooking');
+  it('isInvalidBooking should return true and validateUserBooking should throw Cannot list hotels!', async () => {
+    const mock = jest.spyOn(bookingService, 'validateUserBooking');
     const ticket = generateRandomTicket();
     const type = generateRandomTicketType();
-    mock.mockImplementation(() => {
-      return ticket.status === TicketStatus.RESERVED || type.isRemote || !type.includesHotel;
-    });
     const response = bookingService.isInvalidBooking(ticket, type);
-    console.info({ response }); // RESERVED + isRemote = true + incluesHotel = false
+    mock.mockImplementation((): any => {
+      if (response) {
+        throw cannotListHotelsError();
+      }
+    });
     expect(response).toBe(true);
+    expect(() => bookingService.validateUserBooking(1)).toThrow('Cannot list hotels!');
   });
 
   it('findTicketByEnrollmentId should return Ticket', async () => {
-    const input = 3;
-    const mock = jest.spyOn(bookingService, 'findTicketByEnrollmentId');
-    mock.mockImplementation((): any => {
-      return mockTicket;
-    });
-    const ticket = await bookingService.findTicketByEnrollmentId(input);
-    expect(bookingService.findTicketByEnrollmentId).toBeCalledTimes(1);
-    expect(bookingService.findTicketByEnrollmentId).toHaveBeenCalledWith(input);
-    expect(ticket).toEqual(mockTicket);
+    jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValue(null);
+
+    const ticket = bookingService.findTicketByEnrollmentId(1);
+    expect(ticket).rejects.toEqual(notFoundError());
   });
 });

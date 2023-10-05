@@ -47,4 +47,5 @@ export const bookingService = {
   findEnrollmentByUserId,
   findTicketByEnrollmentId,
   isInvalidBooking,
+  validateUserBooking,
 };
