@@ -6,15 +6,9 @@ import { bookingService } from '@/services/booking-service';
 import { unauthorizedError } from '@/errors';
 
 export async function getBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-  try {
-    //cada usuario tem uma só reserva
-    console.log('asad');
-    const { userId } = req;
+  const { userId } = req;
 
-    const booking = await bookingService.getBooking(userId);
+  const booking = await bookingService.getBooking(userId);
 
-    res.status(httpStatus.OK).json(booking);
-  } catch (err) {
-    next(err);
-  }
+  res.status(httpStatus.OK).json(booking);
 }

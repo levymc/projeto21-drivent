@@ -28,8 +28,8 @@ describe('Testes de integração para a rota /booking', () => {
     const hotel = await createHotel();
     const room = await createRoom(hotel.id);
     const enrollment = await createEnrollmentWithAddress(user);
-    const ticketType = await createTicketType();
-    const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
+    const ticketType = await createTicketType(false, true);
+    await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
     await createBooking(user.id, room.id);
     const token = await generateValidToken(user);
     const response = await server.get('/booking').set('Authorization', `Bearer ${token}`);
