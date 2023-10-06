@@ -41,10 +41,19 @@ async function getBooking(userId: number) {
   };
 }
 
+async function handlePostBooking(userId: number, roomId: number) {
+  await validateUserBooking(userId);
+  const createdBooking = await bookingRepository.createBooking(userId, roomId);
+  return {
+    bookingId: createdBooking.id,
+  };
+}
+
 export const bookingService = {
   getBooking,
   findEnrollmentByUserId,
   findTicketByEnrollmentId,
   isInvalidBooking,
   validateUserBooking,
+  handlePostBooking,
 };
