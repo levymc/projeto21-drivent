@@ -28,7 +28,7 @@ async function findReservedRooms(roomId: number) {
 }
 
 function checkOverCapacity(capacity: number, countReservedRooms: number) {
-  if (countReservedRooms > capacity) throw forbiddenError('Over Capacity');
+  if (countReservedRooms >= capacity) throw forbiddenError('Over Capacity');
 }
 
 function isInvalidBooking(ticket: Ticket, type: TicketType): boolean {
@@ -62,6 +62,7 @@ async function handlePostBooking(userId: number, roomId: number) {
   const reservedRooms = await findReservedRooms(roomId);
   checkOverCapacity(room.capacity, reservedRooms.length);
   const createdBooking = await bookingRepository.createBooking(userId, roomId);
+  console.log(createdBooking);
   return {
     bookingId: createdBooking.id,
   };
