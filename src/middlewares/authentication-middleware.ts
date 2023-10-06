@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { unauthorizedError } from '@/errors';
 import { authenticationRepository } from '@/repositories';
+import { AppError } from '@/errors/AppError';
 
 export async function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   const authHeader = req.header('Authorization');

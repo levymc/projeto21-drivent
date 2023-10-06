@@ -14,6 +14,7 @@ import {
   bookingRouter,
 } from '@/routers';
 import { loadEnv, connectDb, disconnectDB } from '@/config';
+import { errorHandler } from './middlewares/errorHandler';
 
 loadEnv();
 

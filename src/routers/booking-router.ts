@@ -4,6 +4,6 @@ import { getBooking } from '@/controllers/booking-controller';
 
 const bookingRouter = Router();
 
-bookingRouter.get('/', getBooking); //.all('/*', authenticateToken)
+bookingRouter.all('/*', authenticateToken).get('/', getBooking); //.all('/*', authenticateToken)
 
 export { bookingRouter };

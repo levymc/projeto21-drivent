@@ -1,8 +1,13 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
 import { ApplicationError, RequestError } from '@/protocols';
 
-export function handleApplicationErrors(err: RequestError | ApplicationError | Error, _req: Request, res: Response) {
+export function handleApplicationErrors(
+  err: RequestError | ApplicationError | Error,
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   if (err.name === 'CannotEnrollBeforeStartDateError') {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message,
@@ -57,13 +62,11 @@ export function handleApplicationErrors(err: RequestError | ApplicationError | E
     return res.status(httpStatus.PAYMENT_REQUIRED).send(err.message);
   }
 
-  if (err.hasOwnProperty('status') && err.name === 'RequestError') {
-    return res.status((err as RequestError).status).send({
-      message: err.message,
-    });
+  if (err.name === 'ForbiddenError') {
+    return res.status(httpStatus.FORBIDDEN).send(err.message);
   }
 
-  if (err.hasOwnProperty('status') && err.name === 'PaymentError') {
+  if (err.hasOwnProperty('status') && err.name === 'RequestError') {
     return res.status((err as RequestError).status).send({
       message: err.message,
     });
