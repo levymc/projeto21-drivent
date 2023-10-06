@@ -1,5 +1,5 @@
 import { Ticket, TicketStatus, TicketType } from '@prisma/client';
-import { notFoundError } from '@/errors';
+import { forbiddenError, notFoundError } from '@/errors';
 import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 import { bookingRepository, enrollmentRepository, roomRepository, ticketsRepository } from '@/repositories';
 import { EnrollmentMockType } from '@/protocols';
@@ -20,6 +20,15 @@ async function findRoomById(roomId: number) {
   const room = await roomRepository.receiveRoom(roomId);
   if (!room) throw notFoundError();
   return room;
+}
+
+async function findReservedRooms(roomId: number) {
+  const rooms = await bookingRepository.findBookingsByRoomId(roomId);
+  return rooms;
+}
+
+function checkOverCapacity(capacity: number, countReservedRooms: number) {
+  if (countReservedRooms > capacity) throw forbiddenError('Over Capacity');
 }
 
 function isInvalidBooking(ticket: Ticket, type: TicketType): boolean {
@@ -50,10 +59,8 @@ async function getBooking(userId: number) {
 async function handlePostBooking(userId: number, roomId: number) {
   await validateUserBooking(userId);
   const room = await findRoomById(roomId);
-  const capacity = room.capacity;
-  //antes de criar, devemos verificar se
-  // Existem quantos booking com esse roomId? Essa quantidade é maior do que o capacity? Se sim erro 403 Forbidden
-  // Verificar se o roomId existe, caso contrario erro 404 NotFound
+  const reservedRooms = await findReservedRooms(roomId);
+  checkOverCapacity(room.capacity, reservedRooms.length);
   const createdBooking = await bookingRepository.createBooking(userId, roomId);
   return {
     bookingId: createdBooking.id,
