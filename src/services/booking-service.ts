@@ -79,8 +79,9 @@ async function handlePutBooking(userId: number, roomId: number) {
   const reservedRooms = await findReservedRooms(roomId);
   checkOverCapacity(room.capacity, reservedRooms.length);
   const booking = await bookingRepository.findBooking(userId);
+  if (!booking) throw forbiddenError('user doesnt have reservation');
   const updatedBooking = await bookingRepository.updateBooking(booking.id, roomId);
-  return updatedBooking;
+  return { bookingId: updatedBooking.id };
 }
 
 export const bookingService = {
