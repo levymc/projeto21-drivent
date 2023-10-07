@@ -34,6 +34,7 @@ const createAllWithOutBooking = async (isRemote = false, includesHotel = true, t
 };
 
 const server = supertest(app);
+
 beforeAll(async () => {
   await init();
   await cleanDb();
@@ -146,14 +147,5 @@ describe('Integration Test for post /booking', () => {
       const response = await server.post('/booking').set('Authorization', `Bearer ${withOutBooking.token}`).send(body);
       expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
-
-    // it('should respond with status 403 when room capacity is full', async () => {
-    //   const body = { roomId: 55 };
-    //   const { token, user } = await createAllWithOutBooking();
-    //   await createBooking(user.id, 55);
-    //   console.log('oi');
-    //   const response = await server.post('/booking').set('Authorization', `Bearer ${token}`).send(body);
-    //   expect(response.status).toBe(httpStatus.FORBIDDEN);
-    // });
   });
 });
