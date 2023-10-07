@@ -41,7 +41,7 @@ async function validateUserBooking(userId: number) {
   const type = ticket.TicketType;
 
   if (isInvalidBooking(ticket, type)) {
-    throw cannotListHotelsError();
+    throw forbiddenError(`ticket not paid, does not include hotel or remote reservation`);
   }
 }
 

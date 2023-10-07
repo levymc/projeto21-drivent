@@ -1,12 +1,11 @@
 import { TicketStatus } from '@prisma/client';
 import { mockEnrollment1, mockEnrollment2 } from './mocks/enrollment.mock';
 import { generateRandomTicket, generateRandomTicketType } from './mocks/ticket.mock';
-import { bookingService } from '@/services/booking-service';
-import { notFoundError } from '@/errors';
-import { bookingRepository, enrollmentRepository, ticketsRepository } from '@/repositories';
-import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 import { generateRoomMock } from './mocks/room.mock';
 import { generateBookingMock } from './mocks/booking.mock';
+import { bookingService } from '@/services/booking-service';
+import { forbiddenError, notFoundError } from '@/errors';
+import { bookingRepository, enrollmentRepository, ticketsRepository } from '@/repositories';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -63,7 +62,7 @@ describe('Unit Tests Service /booking', () => {
     jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockData);
     jest.spyOn(bookingService, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockData);
     const promisse = bookingService.validateUserBooking(1);
-    expect(promisse).rejects.toEqual(cannotListHotelsError());
+    expect(promisse).rejects.toEqual(forbiddenError(`ticket not paid, does not include hotel or remote reservation`));
   });
 
   it('findTicketByEnrollmentId should return notFoundError when !ticket', async () => {

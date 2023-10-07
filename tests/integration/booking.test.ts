@@ -71,19 +71,19 @@ describe('Integration Test for get /booking', () => {
     it('should respond with status 402 when there is no hotel (includesHotel = false)', async () => {
       const { token } = await createAll(false, false);
       const response = await server.get('/booking').set('Authorization', `Bearer ${token}`);
-      expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
+      expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
 
     it('should respond with status 402 when ticket isRemote', async () => {
       const { token } = await createAll(true, true);
       const response = await server.get('/booking').set('Authorization', `Bearer ${token}`);
-      expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
+      expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
 
     it('should respond with status 402 when ticketType is RESERVED', async () => {
       const { token } = await createAll(false, true, TicketStatus.RESERVED);
       const response = await server.get('/booking').set('Authorization', `Bearer ${token}`);
-      expect(response.status).toBe(httpStatus.PAYMENT_REQUIRED);
+      expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
 
     it('should return OK', async () => {
