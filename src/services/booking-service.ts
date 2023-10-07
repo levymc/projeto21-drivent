@@ -1,6 +1,5 @@
 import { Ticket, TicketStatus, TicketType } from '@prisma/client';
 import { forbiddenError, notFoundError } from '@/errors';
-import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 import { bookingRepository, enrollmentRepository, roomRepository, ticketsRepository } from '@/repositories';
 import { EnrollmentMockType } from '@/protocols';
 
