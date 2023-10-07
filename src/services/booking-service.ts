@@ -26,6 +26,11 @@ async function findReservedRooms(roomId: number) {
   return rooms;
 }
 
+async function checkUserReserve(userId: number) {
+  const reserves = await bookingRepository.findBookingByUserId(userId);
+  if (reserves) throw forbiddenError('User can reserve just one room');
+}
+
 function checkOverCapacity(capacity: number, countReservedRooms: number) {
   if (countReservedRooms >= capacity) throw forbiddenError('Over Capacity');
 }
@@ -60,6 +65,7 @@ async function handlePostBooking(userId: number, roomId: number) {
   const room = await findRoomById(roomId);
   const reservedRooms = await findReservedRooms(roomId);
   checkOverCapacity(room.capacity, reservedRooms.length);
+  await checkUserReserve(userId);
   const createdBooking = await bookingRepository.createBooking(userId, roomId);
   console.log(createdBooking);
   return {
@@ -68,7 +74,6 @@ async function handlePostBooking(userId: number, roomId: number) {
 }
 
 async function handlePutBooking(userId: number, roomId: number) {
-  console.log(`Service`);
   await validateUserBooking(userId);
   const room = await findRoomById(roomId);
   const reservedRooms = await findReservedRooms(roomId);
