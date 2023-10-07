@@ -67,6 +67,17 @@ async function handlePostBooking(userId: number, roomId: number) {
   };
 }
 
+async function handlePutBooking(userId: number, roomId: number) {
+  console.log(`Service`);
+  await validateUserBooking(userId);
+  const room = await findRoomById(roomId);
+  const reservedRooms = await findReservedRooms(roomId);
+  checkOverCapacity(room.capacity, reservedRooms.length);
+  const booking = await bookingRepository.findBooking(userId);
+  const updatedBooking = await bookingRepository.updateBooking(booking.id, roomId);
+  return updatedBooking;
+}
+
 export const bookingService = {
   getBooking,
   findEnrollmentByUserId,
@@ -74,4 +85,5 @@ export const bookingService = {
   isInvalidBooking,
   validateUserBooking,
   handlePostBooking,
+  handlePutBooking,
 };
