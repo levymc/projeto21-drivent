@@ -117,7 +117,7 @@ describe('Unit Tests Service /booking', () => {
     jest.spyOn(bookingService, 'findEnrollmentByUserId').mockResolvedValueOnce(mockEnrollment1);
     jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockData);
     jest.spyOn(bookingService, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockData);
-    jest.spyOn(bookingRepository, 'findBooking').mockResolvedValueOnce(null);
+    jest.spyOn(bookingRepository, 'findBookingByUserId').mockResolvedValueOnce(null);
     expect(bookingService.getBooking).rejects.toEqual(notFoundError());
   });
 
@@ -205,6 +205,7 @@ describe('Unit Tests Service /booking', () => {
       .spyOn(bookingRepository, 'findBookingByUserId')
       .mockResolvedValueOnce({ ...generateBookingMock(), Room: { ...generateRoomMock() } });
     jest.spyOn(bookingRepository, 'updateBooking').mockResolvedValueOnce(generateBookingMock());
+    jest.spyOn(bookingRepository, 'findBooking').mockResolvedValueOnce(generateBookingMock());
     const response = await bookingService.handlePutBooking(1, 1, 1);
     expect(response).toEqual({
       bookingId: expect.any(Number),
