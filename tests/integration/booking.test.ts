@@ -17,9 +17,9 @@ const createAll = async (isRemote = false, includesHotel = true, type?: TicketSt
   const enrollment = await createEnrollmentWithAddress(user);
   const ticketType = await createTicketType(isRemote, includesHotel);
   await createTicket(enrollment.id, ticketType.id, type ? type : TicketStatus.PAID);
-  await createBooking(user.id, room.id);
+  const booking = await createBooking(user.id, room.id);
   const token = await generateValidToken(user);
-  return { token, user, room };
+  return { token, user, room, booking };
 };
 
 const createAllWithOutBooking = async (isRemote = false, includesHotel = true, type?: TicketStatus) => {
@@ -160,7 +160,7 @@ describe('Integration Test for post /booking', () => {
 describe('Integration Test for put /booking', () => {
   it('should respond with status 401 if no token is given', async () => {
     const body = { roomId: 1 };
-    const response = await server.put('/booking').send(body);
+    const response = await server.put('/booking/1').send(body);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -169,7 +169,7 @@ describe('Integration Test for put /booking', () => {
     const body = { roomId: 1 };
     const token = faker.lorem.word();
 
-    const response = await server.put('/booking').set('Authorization', `Bearer ${token}`).send(body);
+    const response = await server.put('/booking/1').set('Authorization', `Bearer ${token}`).send(body);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
@@ -179,16 +179,20 @@ describe('Integration Test for put /booking', () => {
     const userWithoutSession = await createUser();
     const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
 
-    const response = await server.put('/booking').set('Authorization', `Bearer ${token}`).send(body);
+    const response = await server.put('/booking/1').set('Authorization', `Bearer ${token}`).send(body);
 
     expect(response.status).toBe(httpStatus.UNAUTHORIZED);
   });
 
   describe('when token is valid', () => {
     it('should respond with status 404 when there is no roomId', async () => {
+      const created = await createAll();
       const body = { roomId: 998192 };
       const { token } = await createAllWithOutBooking();
-      const response = await server.put('/booking').set('Authorization', `Bearer ${token}`).send(body);
+      const response = await server
+        .put(`/booking/${created.booking.id}`)
+        .set('Authorization', `Bearer ${token}`)
+        .send(body);
       expect(response.status).toBe(httpStatus.NOT_FOUND);
     });
 
@@ -196,7 +200,10 @@ describe('Integration Test for put /booking', () => {
       const { room } = await createAll();
       const withOutBooking = await createAllWithOutBooking();
       const body = { roomId: room.id };
-      const response = await server.put('/booking').set('Authorization', `Bearer ${withOutBooking.token}`).send(body);
+      const response = await server
+        .put(`/booking/${withOutBooking}`)
+        .set('Authorization', `Bearer ${withOutBooking.token}`)
+        .send(body);
       expect(response.status).toBe(httpStatus.FORBIDDEN);
     });
 
@@ -204,7 +211,10 @@ describe('Integration Test for put /booking', () => {
       const created = await createAll();
       const withOutBooking = await createAllWithOutBooking();
       const body = { roomId: withOutBooking.room.id };
-      const response = await server.put('/booking').set('Authorization', `Bearer ${created.token}`).send(body);
+      const response = await server
+        .put(`/booking/${created.booking.id}`)
+        .set('Authorization', `Bearer ${created.token}`)
+        .send(body);
       expect(response.status).toBe(httpStatus.OK);
     });
   });

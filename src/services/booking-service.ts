@@ -51,7 +51,7 @@ async function validateUserBooking(userId: number) {
 
 async function getBooking(userId: number) {
   await validateUserBooking(userId);
-  const booking = await bookingRepository.findBooking(userId);
+  const booking = await bookingRepository.findBookingByUserId(userId);
   if (!booking) throw notFoundError();
 
   return {
@@ -72,12 +72,11 @@ async function handlePostBooking(userId: number, roomId: number) {
   };
 }
 
-async function handlePutBooking(userId: number, roomId: number) {
-  await validateUserBooking(userId);
+async function handlePutBooking(userId: number, roomId: number, bookingId: number) {
   const room = await findRoomById(roomId);
   const reservedRooms = await findReservedRooms(roomId);
   checkOverCapacity(room.capacity, reservedRooms.length);
-  const booking = await bookingRepository.findBooking(userId);
+  const booking = await bookingRepository.findBooking(bookingId);
   if (!booking) throw forbiddenError('user doesnt have reservation');
   const updatedBooking = await bookingRepository.updateBooking(booking.id, roomId);
   return { bookingId: updatedBooking.id };

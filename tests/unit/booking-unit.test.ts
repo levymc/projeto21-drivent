@@ -141,7 +141,7 @@ describe('Unit Tests Service /booking', () => {
     jest.spyOn(bookingService, 'findEnrollmentByUserId').mockResolvedValueOnce(mockEnrollment1);
     jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockData);
     jest.spyOn(bookingService, 'findTicketByEnrollmentId').mockResolvedValueOnce(mockData);
-    jest.spyOn(bookingRepository, 'findBooking').mockResolvedValueOnce({
+    jest.spyOn(bookingRepository, 'findBookingByUserId').mockResolvedValueOnce({
       ...mockBooking,
       Room: mockRoom,
     });
@@ -155,7 +155,9 @@ describe('Unit Tests Service /booking', () => {
   });
 
   it('checkUserReserve should throw ForbiddenError', async () => {
-    jest.spyOn(bookingRepository, 'findBookingByUserId').mockResolvedValueOnce(generateBookingMock());
+    jest
+      .spyOn(bookingRepository, 'findBookingByUserId')
+      .mockResolvedValueOnce({ ...generateBookingMock(), Room: generateRoomMock() });
     expect(bookingService.checkUserReserve).rejects.toEqual(forbiddenError('User can reserve just one room'));
   });
 
@@ -185,7 +187,6 @@ describe('Unit Tests Service /booking', () => {
 
   it('handlePutBooking should return a bookingId', async () => {
     // Mock das funções usadas pela handlePostBooking
-    jest.spyOn(bookingService, 'validateUserBooking').mockResolvedValueOnce();
     jest.spyOn(bookingService, 'findRoomById').mockResolvedValueOnce(generateRoomMock());
     jest.spyOn(roomRepository, `receiveRoom`).mockResolvedValueOnce(generateRoomMock());
     jest.spyOn(bookingRepository, `findBookingsByRoomId`).mockResolvedValueOnce([generateBookingMock()]);
@@ -201,10 +202,10 @@ describe('Unit Tests Service /booking', () => {
     jest.spyOn(enrollmentRepository, `findWithAddressByUserId`).mockResolvedValueOnce(mockEnrollment1);
     jest.spyOn(bookingRepository, 'createBooking').mockResolvedValueOnce(generateBookingMock());
     jest
-      .spyOn(bookingRepository, 'findBooking')
+      .spyOn(bookingRepository, 'findBookingByUserId')
       .mockResolvedValueOnce({ ...generateBookingMock(), Room: { ...generateRoomMock() } });
     jest.spyOn(bookingRepository, 'updateBooking').mockResolvedValueOnce(generateBookingMock());
-    const response = await bookingService.handlePutBooking(1, 1);
+    const response = await bookingService.handlePutBooking(1, 1, 1);
     expect(response).toEqual({
       bookingId: expect.any(Number),
     });
