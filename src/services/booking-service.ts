@@ -67,7 +67,6 @@ async function handlePostBooking(userId: number, roomId: number) {
   checkOverCapacity(room.capacity, reservedRooms.length);
   await checkUserReserve(userId);
   const createdBooking = await bookingRepository.createBooking(userId, roomId);
-  console.log(createdBooking);
   return {
     bookingId: createdBooking.id,
   };

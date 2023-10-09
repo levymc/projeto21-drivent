@@ -182,4 +182,31 @@ describe('Unit Tests Service /booking', () => {
       bookingId: expect.any(Number),
     });
   });
+
+  it('handlePutBooking should return a bookingId', async () => {
+    // Mock das funções usadas pela handlePostBooking
+    jest.spyOn(bookingService, 'validateUserBooking').mockResolvedValueOnce();
+    jest.spyOn(bookingService, 'findRoomById').mockResolvedValueOnce(generateRoomMock());
+    jest.spyOn(roomRepository, `receiveRoom`).mockResolvedValueOnce(generateRoomMock());
+    jest.spyOn(bookingRepository, `findBookingsByRoomId`).mockResolvedValueOnce([generateBookingMock()]);
+    jest.spyOn(bookingRepository, `findBookingByUserId`).mockResolvedValueOnce(null);
+    jest
+      .spyOn(bookingService, 'findReservedRooms')
+      .mockResolvedValueOnce([generateBookingMock(), generateBookingMock()]);
+    jest.spyOn(ticketsRepository, 'findTicketByEnrollmentId').mockResolvedValueOnce({
+      TicketType: { ...mockTicketType },
+      ...mockTicketPaid,
+    });
+
+    jest.spyOn(enrollmentRepository, `findWithAddressByUserId`).mockResolvedValueOnce(mockEnrollment1);
+    jest.spyOn(bookingRepository, 'createBooking').mockResolvedValueOnce(generateBookingMock());
+    jest
+      .spyOn(bookingRepository, 'findBooking')
+      .mockResolvedValueOnce({ ...generateBookingMock(), Room: { ...generateRoomMock() } });
+    jest.spyOn(bookingRepository, 'updateBooking').mockResolvedValueOnce(generateBookingMock());
+    const response = await bookingService.handlePutBooking(1, 1);
+    expect(response).toEqual({
+      bookingId: expect.any(Number),
+    });
+  });
 });
