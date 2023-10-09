@@ -11,6 +11,14 @@ export const mockTicket: Ticket = {
   createdAt: new Date(),
   updatedAt: new Date(),
 };
+export const mockTicketPaid: Ticket = {
+  id: 555,
+  ticketTypeId: 2,
+  enrollmentId: 3,
+  status: TicketStatus.PAID,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
 export const mockTicketType: TicketTypeMockType = {
   id: 2,

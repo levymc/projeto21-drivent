@@ -92,4 +92,8 @@ export const bookingService = {
   validateUserBooking,
   handlePostBooking,
   handlePutBooking,
+  checkUserReserve,
+  findRoomById,
+  findReservedRooms,
+  checkOverCapacity,
 };
